@@ -79,7 +79,7 @@ export default function QuizDetails({
         <Text style={styles.subtitle2}>{quizType}</Text>
 
         <Image
-          source={{uri : "../../assets/favicon.png"}}
+          source="../../assets/icon.png"
           style={styles.image}
         />
         <View style={styles.divider}></View>
@@ -95,7 +95,7 @@ export default function QuizDetails({
               return (
                 //display the questions in View.
                 <View style={styles.qstn}>
-                  <Text style={styles.qstnText}> { (idx +1) + ". " +item} </Text>
+                  <Text style={styles.qstnText}> {idx + 1 + ". " + item} </Text>
                 </View>
               );
             })

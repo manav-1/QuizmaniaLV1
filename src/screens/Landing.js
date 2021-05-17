@@ -21,8 +21,8 @@ export default function Landing({ navigation }) {
                 setIsLoading(false);
             }
 
-            this.animation.reset();
-            this.animation.play();
+            // this.animation.reset();
+            // this.animation.play();
         })();
 
         //to prevent going back
@@ -52,7 +52,7 @@ export default function Landing({ navigation }) {
              :
             <>
              <View style={styles.animationContainer}>
-               <LottieView
+               {/* <LottieView
                  ref={animation => {
                       this.animation = animation;
                      }}
@@ -64,7 +64,7 @@ export default function Landing({ navigation }) {
                        source={require('../../assets/logo5.json')}
      // OR find more Lottie files @ https://lottiefiles.com/featured
      // Just click the one you like, place that file in the 'assets' folder to the left, and replace the above 'require' statement
-               />
+               /> */}
                         </View>
                         <Text style={styles.title}>Quizmania</Text>
                         <View style={styles.divider}></View>
