@@ -85,16 +85,28 @@ export default function MyQuizes({ navigation }) {
       ) : (
         <ScrollView style={styles.container}>
           {myQuizzes.map((item, idx) => {
-            console.log(item);
-            return (
-              <QuizItem
-                key={idx}
-                index={idx}
-                name={item.quizName}
-                imageUrl={item.quizImgUri}
-                onPress={handleQuizItemClick}
-              />
-            );
+             if (item.quizImgUri) {
+              return (
+                <QuizItem
+                  key={idx}
+                  index={idx}
+                  name={item.quizName}
+                  imageUrl={item.quizImgUri.uri}
+                  onPress={handleQuizItemClick}
+                />
+              );
+            }
+            else{
+              return (
+                <QuizItem
+                  key={idx}
+                  index={idx}
+                  name={item.quizName}
+                  imageUrl={item.quizImgUri}
+                  onPress={handleQuizItemClick}
+                />
+              );
+            }
           })}
 
           <TouchableOpacity

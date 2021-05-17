@@ -35,9 +35,8 @@ export default function CreateQuiz({ navigation }) {
     //asking for permission to access phone's gallery
     (async () => {
       if (Platform.OS !== "web") {
-        const {
-          status,
-        } = await ImagePicker.requestCameraRollPermissionsAsync();
+        const { status } =
+          await ImagePicker.requestCameraRollPermissionsAsync();
         if (status !== "granted") {
           alert("Sorry, we need camera roll permissions to make this work!");
         }
@@ -115,39 +114,6 @@ export default function CreateQuiz({ navigation }) {
     }
   }
 
-  function insertQuizInFirebase(createdByUserId, imgUri) {
-    const timeStamp = Math.floor(Date.now() / 1000);
-    const insertKey = createdByUserId + "_" + timeStamp;
-
-    const quizesDbRef = firebase.app().database().ref("quizes/");
-
-    quizesDbRef.child(insertKey).set(
-      {
-        createdByUserId,
-        quizImgUri: imgUri,
-        quizName,
-        quizDesc,
-        quizType,
-      },
-      (error) => {
-        if (error) {
-          setIsLoading(false);
-          displaySnackBar("error", "Failed to add Quiz");
-        } else {
-          setIsLoading(false);
-          displaySnackBar("success", "Quiz Added");
-          navigation.navigate("QuizDetails", {
-            createdByUserId,
-            quizImgUri: imgUri,
-            quizName,
-            quizDesc,
-            quizType,
-          });
-        }
-      }
-    );
-  }
-
   //function to upload the image in firebase
   async function uploadImageInFirebase(createdByUserId) {
     const timeStamp = Math.floor(Date.now() / 1000);
@@ -186,6 +152,38 @@ export default function CreateQuiz({ navigation }) {
   }
 
   //function to insert quiz in firebase database
+  function insertQuizInFirebase(createdByUserId, imgUri) {
+    const timeStamp = Math.floor(Date.now() / 1000);
+    const insertKey = createdByUserId + "_" + timeStamp;
+
+    const quizesDbRef = firebase.app().database().ref("quizes/");
+
+    quizesDbRef.child(insertKey).set(
+      {
+        createdByUserId,
+        quizImgUri: imgUri,
+        quizName,
+        quizDesc,
+        quizType,
+      },
+      (error) => {
+        if (error) {
+          setIsLoading(false);
+          displaySnackBar("error", "Failed to add Quiz");
+        } else {
+          setIsLoading(false);
+          displaySnackBar("success", "Quiz Added");
+          navigation.navigate("QuizDetails", {
+            insertKey,
+            quizImgUri: imgUri,
+            quizName,
+            quizDesc,
+            quizType,
+          });
+        }
+      }
+    );
+  }
 
   //component rendering
   return (
