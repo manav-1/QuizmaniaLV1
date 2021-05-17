@@ -43,14 +43,12 @@ export default function MyQuizes({ navigation }) {
             }
           }
           myQuizes.reverse();
-          setMyQuizzes(myQuizes)
+          setMyQuizzes(myQuizes);
         }
         setIsLoading(false);
-
       });
-    }
-    else{
-      displaySnackBar('error','User is not Logged in')
+    } else {
+      displaySnackBar("error", "User is not Logged in");
     }
   }
   //function to display snackbar
@@ -87,6 +85,7 @@ export default function MyQuizes({ navigation }) {
       ) : (
         <ScrollView style={styles.container}>
           {myQuizzes.map((item, idx) => {
+            console.log(item);
             return (
               <QuizItem
                 key={idx}

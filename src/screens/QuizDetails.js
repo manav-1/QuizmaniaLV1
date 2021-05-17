@@ -33,22 +33,25 @@ export default function QuizDetails({
   function fetchQuizQuestions() {
     if (insertKey) {
       const quizDbRef = firebase.app().database().ref("quizes/");
-      quizDbRef.child(insertKey + "/questions").on("value", function (snap) {
-        var questions = snap.val();
-        if (questions) {
-          var quizQuestions = [];
-          for (var key in questions) {
-            var question = questions[key];
-            var questionTitle = question.question;
-            quizQuestions.push(questionTitle);
+      quizDbRef.child(insertKey + "/questions").on(
+        "value",
+        function (snap) {
+          var questions = snap.val();
+          if (questions) {
+            var quizQuestions = [];
+            for (var key in questions) {
+              var question = questions[key];
+              var questionTitle = question.question;
+              quizQuestions.push(questionTitle);
+            }
+            setQuestions(quizQuestions);
           }
-          setQuestions(quizQuestions);
+          setIsLoading(false);
+        },
+        (error) => {
+          displaySnackBar("error", "Failed to get Quiz Questions");
         }
-        setIsLoading(false)
-      },
-      error =>{
-        displaySnackBar('error',"Failed to get Quiz Questions")
-      });
+      );
     }
   }
 
@@ -79,7 +82,7 @@ export default function QuizDetails({
         <Text style={styles.subtitle2}>{quizType}</Text>
 
         <Image
-          source="../../assets/icon.png"
+          source={quizImgUri || require("../../assets/icon.png")}
           style={styles.image}
         />
         <View style={styles.divider}></View>
