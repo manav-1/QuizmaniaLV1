@@ -15,7 +15,7 @@ export default function QuizItem({
   return (
     <TouchableOpacity style={[styles.box, customStyle]} onPress={handleOnPress}>
       {imageUrl ? (
-        <Image source={{ uri: imageUrl }} style={styles.image} />
+        <Image source={{ uri: imageUrl.uri }} style={styles.image} />
       ) : (
         <Image source={require("../../assets/favicon.png")} style={styles.image} />
       )}
