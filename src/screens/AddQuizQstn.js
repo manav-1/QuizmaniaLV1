@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TextInput, ScrollView } from "react-native";
-
 import BasicButton from "../components/BasicButton";
+import firebase from "../FirebaseConfig";
 
-export default function AddQuizQstn() {
+export default function AddQuizQstn(
+  { route: { params: { quizId } = {} } = {} },
+  navigation
+) {
+  const [isLoading, setIsLoading] = useState(false);
   const [qstn, setQstn] = useState("");
   const [correctOption, setCorrectOption] = useState("");
   const [option1, setOption1] = useState("");
@@ -11,82 +15,128 @@ export default function AddQuizQstn() {
   const [option3, setOption3] = useState("");
 
   //function to handle when add btn clicked on
-  function hanldeAddBtnClick() {
+  function handleAddBtnClick() {
     console.log("add btn clicked");
+    if (quizId) {
+      setIsLoading(true);
+      const timeStamp = Math.floor(Date.now() / 1000);
+      const qstnId = quizId + "_qstn_" + timeStamp;
+      const quizDbRef = firebase.app().database().ref("quizes/");
+      quizDbRef.child(quizId + "/questions/" + qstnId).set(
+        {
+          questions: qstn,
+          options: [
+            {
+              optionId: qstnId + "_option0",
+              option: correctOption,
+              isAns: true,
+            },
+            {
+              optionId: qstnId + "_option1",
+              option: option1,
+              isAns: false,
+            },
+            {
+              optionId: qstnId + "_option2",
+              option: option2,
+              isAns: false,
+            },
+            {
+              optionId: qstnId + "_option3",
+              option: option3,
+              isAns: false,
+            },
+          ],
+        },
+        (error) => {
+          setIsLoading(false);
+          navigation.navigate("Quiz Details");
+        }
+      );
+    } else {
+      navigation.navigate("Quiz Details");
+    }
   }
 
   //function to handle when cancel btn is pressed
-  function hanldeCancelBtnClick() {
+  function handleCancelBtnClick() {
     console.log("cancel btn clicked");
+    navigation.navigate("Quiz Details");
   }
 
   //component rendering
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>Create Quiz</Text>
+    <>
+      {isLoading ? (
+        <View></View>
+      ) : (
+        <ScrollView style={styles.container}>
+          <Text style={styles.title}>Create Quiz</Text>
 
-      <View style={styles.form}>
-        <Text style={styles.label}>Question</Text>
-        <TextInput
-          style={styles.inputField}
-          placeholder="your question?"
-          value={qstn}
-          onChangeText={(val) => setQstn(val)}
-        />
-        <View style={styles.divider}></View>
-        <View style={styles.divider}></View>
+          <View style={styles.form}>
+            <Text style={styles.label}>Question</Text>
+            <TextInput
+              style={styles.inputField}
+              placeholder="your question?"
+              value={qstn}
+              onChangeText={(val) => setQstn(val)}
+            />
+            <View style={styles.divider}></View>
+            <View style={styles.divider}></View>
 
-        <Text style={styles.label}>Correct Answer</Text>
-        <TextInput
-          style={styles.inputField}
-          placeholder="correct answer"
-          value={correctOption}
-          onChangeText={(val) => setCorrectOption(val)}
-        />
-        <View style={styles.divider}></View>
+            <Text style={styles.label}>Correct Answer</Text>
+            <TextInput
+              style={styles.inputField}
+              placeholder="correct answer"
+              value={correctOption}
+              onChangeText={(val) => setCorrectOption(val)}
+            />
+            <View style={styles.divider}></View>
 
-        <Text style={styles.label}>Option 1</Text>
-        <TextInput
-          style={styles.inputField}
-          placeholder="option 1"
-          value={option1}
-          onChangeText={(val) => setOption1(val)}
-        />
-        <View style={styles.divider}></View>
+            <Text style={styles.label}>Option 1</Text>
+            <TextInput
+              style={styles.inputField}
+              placeholder="option 1"
+              value={option1}
+              onChangeText={(val) => setOption1(val)}
+            />
+            <View style={styles.divider}></View>
 
-        <Text style={styles.label}>Option 2</Text>
-        <TextInput
-          style={styles.inputField}
-          placeholder="option 2"
-          value={option2}
-          onChangeText={(val) => setOption2(val)}
-        />
-        <View style={styles.divider}></View>
+            <Text style={styles.label}>Option 2</Text>
+            <TextInput
+              style={styles.inputField}
+              placeholder="option 2"
+              value={option2}
+              onChangeText={(val) => setOption2(val)}
+            />
+            <View style={styles.divider}></View>
 
-        <Text style={styles.label}>Option 3</Text>
-        <TextInput
-          style={styles.inputField}
-          placeholder="option 3"
-          value={option3}
-          onChangeText={(val) => setOption3(val)}
-        />
-        <View style={styles.divider}></View>
+            <Text style={styles.label}>Option 3</Text>
+            <TextInput
+              style={styles.inputField}
+              placeholder="option 3"
+              value={option3}
+              onChangeText={(val) => setOption3(val)}
+            />
+            <View style={styles.divider}></View>
 
-        <View style={styles.btnsContainer}>
-          <BasicButton
-            text="Add"
-            customStyle={styles.button}
-            onPress={hanldeAddBtnClick}
-          />
+            <View style={styles.btnsContainer}>
+              <BasicButton
+                text="Add"
+                customStyle={styles.button}
+                onPress={handleAddBtnClick}
+              />
 
-          <BasicButton
-            text="Cancel"
-            customStyle={styles.button}
-            onPress={hanldeCancelBtnClick}
-          />
-        </View>
-      </View>
-    </ScrollView>
+              <BasicButton
+                text="Cancel"
+                customStyle={styles.button}
+                onPress={handleCancelBtnClick}
+              />
+            </View>
+          </View>
+        </ScrollView>
+      )}
+    </>
   );
 }
 
