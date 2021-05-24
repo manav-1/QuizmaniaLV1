@@ -61,7 +61,7 @@ export default function Profile() {
           <Image source={{ uri: image }} style={styles.image} />
           <TouchableOpacity onPress={handleProfilePicEditBtnClick}>
             <Image
-              source={require("./edit.png")}
+              source={require("../../assets/edit.png")}
               style={styles.editIcon}
             />
           </TouchableOpacity>

@@ -67,7 +67,7 @@ export default function MyQuizes({ navigation }) {
   function handleQuizItemClick(index) {
     console.log("navigation", navigation);
     console.log(index);
-    navigation.navigate("QuizDetails")
+    navigation.navigate("QuizDetails",myQuizzes[index]);
   }
 
   //fuction to handle when add new quiz btn is pressed on
