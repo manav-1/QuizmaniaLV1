@@ -47,7 +47,7 @@ export default function UserHome({ navigation }) {
           setIsLoading(false);
         })
         .catch((error) => {
-          displaySnackBar("error", "Failed to get quizes");
+          displaySnackBar("error", "Failed to get quizes"+error);
         });
     } else {
       displaySnackBar("error", "User is not logged in");
